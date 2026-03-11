@@ -1,0 +1,46 @@
+﻿@page "/Form"
+@inject ILogger<Form> Logger
+
+@using BlazorAppTailwind.Models
+
+<div class="bg-[#171B27] text-white h-screen gap-4">
+    <h3>Let's chat!</h3>
+    <p>We'd love to chat, please informe the information about your ship and we'll be in touch as quicky as possible.</p>
+
+    <EditForm Model="Model" OnSubmit="Submit" FormName="Starship1">
+        <div>
+            <label for="name">Nome:</label>
+            <InputText class="bg-[#1D2034] p-2" id="name" @bind-Value="Model!.Name" />
+        </div>
+        <div>
+            <label for="company">Empresa:</label>
+            <InputText class="bg-[#1D2034] p-2" id="company" @bind-Value="Model!.Company" />
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <InputText class="bg-[#1D2034] p-2" id="email" @bind-Value="Model!.Email" />
+        </div>
+        <div>
+            <label for="phone">Telefone:</label>
+            <InputText class="bg-[#1D2034] p-2" id="phone" @bind-Value="Model!.Phone" />
+        </div>
+        <div>
+            <input type="checkbox" id="privacy">
+            <label for="privacy" class="fine-print">I agree that my personal data will be processed in accordance with the <a href="#">Privacy Policy</a></label>
+        </div>
+        <div>
+            <button class="bg-[#6A20E4]" type="submit">Submit</button>
+        </div>
+    </EditForm>
+</div>
+
+
+@code {
+    [SupplyParameterFromForm]
+    
+    private Starship? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit() => Logger.LogInformation("Id = {Id}", Model?.Name);
+}
