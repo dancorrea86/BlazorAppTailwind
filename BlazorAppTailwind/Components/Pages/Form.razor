@@ -2,6 +2,7 @@
 @inject ILogger<Form> Logger
 
 @using BlazorAppTailwind.Models
+@using BlazorAppTailwind.Service
 
 <div class="bg-[#171B27] text-white h-screen gap-4 pl-20 pt-20">
     <h3 class="text-6xl">Let's chat!</h3>
@@ -47,7 +48,10 @@
     {
         Console.WriteLine($"Recebi um POST para: {Model?.Name} em {DateTime.Now}");
         Logger.LogInformation("Id = {Id}", Model?.Name);
-    }
 
-        
+        if (Model is not null)
+        {
+            StarshipRepository.SaveStarship(Model);
+        };
+    }
 }
