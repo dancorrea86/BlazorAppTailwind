@@ -1,0 +1,36 @@
+﻿@page "/starships"
+@inject ILogger<Form> Logger
+
+@using BlazorAppTailwind.Service
+@using BlazorAppTailwind.Models
+
+<h3>Starships</h3>
+
+<div>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Empresa</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var ship in Model)
+            {
+                <tr>
+                    <td>@ship.Name</td>
+                    <td>@ship.Company</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code {
+    private List<Starship> Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model = StarshipRepository.GetStarships();
+    }
+}

@@ -1,6 +1,8 @@
-{
-  "Name": "Falcon",
-  "Company": "Daniel",
-  "Email": "daniel.correa@gmail.com",
-  "Phone": "1999898080"
-}
+[
+	{
+		"Name": "Falcon",
+		"Company": "Daniel",
+		"Email": "daniel.correa@gmail.com",
+		"Phone": "1999898080"
+	}
+]

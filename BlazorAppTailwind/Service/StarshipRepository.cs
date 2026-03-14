@@ -14,5 +14,17 @@ namespace BlazorAppTailwind.Service
 
             File.WriteAllText(filePath, json);
         }
+
+        public static List<Starship> GetStarships()
+        {
+            
+            string jsonFilePath = "products.json";
+
+            string jsonString = File.ReadAllText(jsonFilePath);
+
+            List<Starship> starships = JsonSerializer.Deserialize<List<Starship>>(jsonString);
+
+            return starships;
+        }
     }
 }
