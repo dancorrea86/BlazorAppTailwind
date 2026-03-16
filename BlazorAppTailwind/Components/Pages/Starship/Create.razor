@@ -1,0 +1,138 @@
+@page "/Starship/Create"
+@inject ILogger<Create> Logger
+@inject NavigationManager Navigation
+
+@using BlazorAppTailwind.Models
+@using BlazorAppTailwind.Service
+
+<PageTitle>Nova Nave - Blazor Tailwind Project</PageTitle>
+
+<div class="min-h-screen bg-gray-900 text-gray-100 selection:bg-indigo-500/30 pb-20">
+    <!-- Header Section -->
+    <header class="relative overflow-hidden pt-16 pb-12">
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(40rem_35rem_at_top,theme(colors.indigo.900/0.2),theme(colors.gray.900))]"></div>
+        
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="mx-auto max-w-2xl text-center">
+                <h1 class="focus:outline-none text-3xl font-bold tracking-tight text-white sm:text-5xl">
+                    Registrar Nova Nave
+                </h1>
+                <p class="mt-4 text-lg leading-8 text-gray-400">
+                    Preencha os detalhes abaixo para adicionar uma nova embarcação à frota estelar.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Form Section -->
+    <main class="mx-auto max-w-2xl px-6 lg:px-8">
+        <div class="bg-gray-800/50 backdrop-blur-sm border border-white/10 rounded-2xl p-8 shadow-2xl">
+            <EditForm Model="Model" OnValidSubmit="Submit" FormName="StarshipCreate" class="space-y-6">
+                <DataAnnotationsValidator />
+                
+                <div class="meu-resumo-erros mb-6">
+                    <ValidationSummary />
+                </div>
+
+                <div class="grid grid-cols-1 gap-x-6 gap-y-8">
+                    <!-- Nome da Nave -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium leading-6 text-indigo-400 uppercase tracking-wider">Nome da Nave</label>
+                        <div class="mt-2">
+                            <InputText id="name" @bind-Value="Model!.Name" 
+                                class="block w-full rounded-md border-0 bg-white/5 py-2.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 transition-all" 
+                                placeholder="Ex: USS Enterprise" />
+                            <ValidationMessage For="() => Model.Name" class="mt-1 text-xs text-rose-400" />
+                        </div>
+                    </div>
+
+                    <!-- Empresa -->
+                    <div>
+                        <label for="company" class="block text-sm font-medium leading-6 text-indigo-400 uppercase tracking-wider">Empresa Fabricante</label>
+                        <div class="mt-2">
+                            <InputText id="company" @bind-Value="Model!.Company" 
+                                class="block w-full rounded-md border-0 bg-white/5 py-2.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 transition-all" 
+                                placeholder="Ex: Starfleet Engineering" />
+                            <ValidationMessage For="() => Model.Company" class="mt-1 text-xs text-rose-400" />
+                        </div>
+                    </div>
+
+                    <!-- Email de Contato -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium leading-6 text-indigo-400 uppercase tracking-wider">Email de Contato</label>
+                        <div class="mt-2">
+                            <InputText type="email" id="email" @bind-Value="Model!.Email" 
+                                class="block w-full rounded-md border-0 bg-white/5 py-2.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 transition-all" 
+                                placeholder="capitao@frota.com" />
+                            <ValidationMessage For="() => Model.Email" class="mt-1 text-xs text-rose-400" />
+                        </div>
+                    </div>
+
+                    <!-- Telefone -->
+                    <div>
+                        <label for="phone" class="block text-sm font-medium leading-6 text-indigo-400 uppercase tracking-wider">Telefone de Emergência</label>
+                        <div class="mt-2">
+                            <InputText type="tel" id="phone" @bind-Value="Model!.Phone" 
+                                class="block w-full rounded-md border-0 bg-white/5 py-2.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6 transition-all" 
+                                placeholder="+55 (11) 99999-9999" />
+                            <ValidationMessage For="() => Model.Phone" class="mt-1 text-xs text-rose-400" />
+                        </div>
+                    </div>
+
+                    <!-- Privacidade -->
+                    <div class="relative flex gap-x-3">
+                        <div class="flex h-6 items-center">
+                            <InputCheckbox id="privacy" @bind-Value="Model!.AcceptPrivacy" 
+                                class="h-4 w-4 rounded border-white/10 bg-white/5 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900" />
+                        </div>
+                        <div class="text-sm leading-6">
+                            <label for="privacy" class="font-medium text-gray-300">
+                                Concordo que meus dados sejam processados conforme a 
+                                <a href="#" class="text-indigo-400 hover:text-indigo-300 underline decoration-indigo-400/30 underline-offset-4">Política de Privacidade</a>.
+                            </label>
+                            <ValidationMessage For="() => Model.AcceptPrivacy" class="mt-1 text-xs text-rose-400" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="mt-10 flex items-center justify-end gap-x-6 border-t border-white/10 pt-8">
+                    <a href="/Starship/List"
+                           class="text-sm font-semibold leading-6 text-white hover:text-gray-300 transition-colors cursor-pointer">
+                        Cancelar
+                    </a>
+                    <button type="submit" 
+                        class="rounded-md bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all flex items-center gap-2">
+                        <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                        </svg>
+                        Salvar Registro
+                    </button>
+                </div>
+            </EditForm>
+        </div>
+    </main>
+</div>
+
+@code {
+    [SupplyParameterFromForm]
+    private Starship? Model { get; set; }
+
+    protected override void OnInitialized() => Model ??= new();
+
+    private void Submit()
+    {
+        Logger.LogInformation("Salvando nova nave: {Name}", Model?.Name);
+
+        if (Model is not null)
+        {
+            StarshipRepository.SaveStarship(Model);
+            Navigation.NavigateTo("/Starship/List");
+        }
+    }
+
+    private void Cancel()
+    {
+        Navigation.NavigateTo("/Starship/List");
+    }
+}

@@ -1,4 +1,4 @@
-﻿@page "/Account/Register"
+@page "/Account/Register"
 
 @using System.ComponentModel.DataAnnotations
 @using System.Text
@@ -17,45 +17,62 @@
 
 <PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
+<div class="flex flex-col items-center h-screen justify-center bg-gray-200">
+    <div class="grid grid-cols-6">
+        <div class="flex flex-row-reverse col-span-2 col-start-2">
+            <img class="w-180 rounded-lg shadow-md ml-6" src="/Images/imagem_login.png" alt="Register Icon" />
+        </div>
+        <div class="col-span-2 col-start-4 bg-white">
+            <div class="w-90 m-auto p-8 pt-12">
+                <section>
+                    <StatusMessage Message="@Message" />
+                    <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
+                        <DataAnnotationsValidator />
+                        <div class="flex items-center justify-center mb-6">
+                            <h2 class="font-[700] text-2xl uppercase tracking-wider">Registrar</h2>
+                        </div>
 
-<div class="row">
-    <div class="col-lg-6">
-        <StatusMessage Message="@Message" />
-        <EditForm Model="Input" method="post" OnValidSubmit="RegisterUser" FormName="register">
-            <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
-            <ValidationSummary class="text-danger" role="alert" />
-            <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.Email" id="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label for="Input.Email">Email</label>
-                <ValidationMessage For="() => Input.Email" class="text-danger" />
+                        <ValidationSummary class="text-danger mb-4" role="alert" />
+
+                        <div class="flex flex-col mb-3">
+                            <label for="Input.Email" class="inline-block font-medium text-sm text-gray-700">Email</label>
+                            <InputText @bind-Value="Input.Email" id="Input.Email" class="p-2 h-8 mt-1 w-80 rounded-sm bg-gray-200 focus:ring-1 focus:ring-blue-400 outline-none transition-all" autocomplete="username" aria-required="true" placeholder="nome@exemplo.com" />
+                            <ValidationMessage For="() => Input.Email" class="text-xs text-red-500 mt-1" />
+                        </div>
+
+                        <div class="flex flex-col mb-3">
+                            <label for="Input.Password" class="inline-block font-medium text-sm text-gray-700">Senha</label>
+                            <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="p-2 h-8 mt-1 w-80 rounded-sm bg-gray-200 focus:ring-1 focus:ring-blue-400 outline-none transition-all" autocomplete="new-password" aria-required="true" placeholder="Sua senha" />
+                            <ValidationMessage For="() => Input.Password" class="text-xs text-red-500 mt-1" />
+                        </div>
+
+                        <div class="flex flex-col mb-6">
+                            <label for="Input.ConfirmPassword" class="inline-block font-medium text-sm text-gray-700">Confirmar Senha</label>
+                            <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="p-2 h-8 mt-1 w-80 rounded-sm bg-gray-200 focus:ring-1 focus:ring-blue-400 outline-none transition-all" autocomplete="new-password" aria-required="true" placeholder="Confirme sua senha" />
+                            <ValidationMessage For="() => Input.ConfirmPassword" class="text-xs text-red-500 mt-1" />
+                        </div>
+
+                        <div>
+                            <button type="submit" class="h-10 w-80 text-white bg-[#00A5F1] hover:bg-[#0084c2] transition-colors font-bold rounded-sm">Criar Conta</button>
+                        </div>
+
+                        <div class="flex flex-col mt-4 text-sm">
+                            <p>
+                                Já tem uma conta? <a class="text-[#00A5F1] hover:underline" href="Account/Login">Entre aqui</a>
+                            </p>
+                        </div>
+                    </EditForm>
+                </section>
             </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.Password">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger" />
-            </div>
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.ConfirmPassword" id="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label for="Input.ConfirmPassword">Confirm Password</label>
-                <ValidationMessage For="() => Input.ConfirmPassword" class="text-danger" />
-            </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </EditForm>
-    </div>
-    <div class="col-lg-4 col-lg-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            <ExternalLoginPicker />
-        </section>
+        </div>
     </div>
 </div>
 
 @code {
     private IEnumerable<IdentityError>? identityErrors;
+
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
 
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = default!;

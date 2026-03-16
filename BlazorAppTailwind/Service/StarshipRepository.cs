@@ -88,5 +88,32 @@ namespace BlazorAppTailwind.Service
 
             return starships;
         }
+
+        public static List<Starship> UpdateStarships(Starship ship)
+        {
+            string jsonFilePath = "products.json";
+
+            string jsonString = File.ReadAllText(jsonFilePath);
+
+            List<Starship> starships = JsonSerializer.Deserialize<List<Starship>>(jsonString);
+
+            Starship? existingShip = starships.FirstOrDefault(s => s.ID == ship.ID);
+
+            if (existingShip != null)
+            {
+                existingShip.Name = ship.Name;
+                existingShip.Company = ship.Company;
+                existingShip.Email = ship.Email;
+                existingShip.Phone = ship.Phone;
+                existingShip.AcceptPrivacy = ship.AcceptPrivacy;
+            }
+
+            JsonSerializerOptions options = new JsonSerializerOptions { WriteIndented = true };
+            string? json = JsonSerializer.Serialize(starships, options);
+
+            File.WriteAllText(jsonFilePath, json);
+
+            return starships;
+        }
     }
 }

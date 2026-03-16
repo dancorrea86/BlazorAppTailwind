@@ -1,0 +1,120 @@
+@page "/Starship/List"
+@inject ILogger<Create> Logger
+@rendermode InteractiveServer
+
+
+@using BlazorAppTailwind.Service
+@using BlazorAppTailwind.Models
+@using Microsoft.AspNetCore.Authorization
+
+<PageTitle>Frota Estelar - Blazor Tailwind Project</PageTitle>
+
+<div class="min-h-screen bg-gray-900 text-gray-100 selection:bg-indigo-500/30 pb-12">
+    <!-- Header Section -->
+    <header class="relative overflow-hidden pt-12 pb-8">
+        <div class="absolute inset-0 -z-10 bg-[radial-gradient(35rem_30rem_at_top,theme(colors.indigo.900/0.2),theme(colors.gray.900))]"></div>
+        
+        <div class="mx-auto max-w-7xl px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                        Frota Estelar
+                    </h1>
+                    <p class="mt-2 text-sm text-gray-400">
+                        Gerenciamento completo das naves espaciais registradas no sistema.
+                    </p>
+                </div>
+                <div>
+                    <a href="/Starship/Create" class="inline-flex items-center gap-x-2 rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-all">
+                        <svg class="-ml-0.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                        </svg>
+                        Nova Nave
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Table Section -->
+    <main class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="mt-8 flow-root">
+            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                    <div class="overflow-hidden shadow ring-1 ring-white/5 sm:rounded-lg bg-gray-800/50 backdrop-blur-sm border border-white/10">
+                        <table class="min-w-full divide-y divide-white/10">
+                            <thead class="bg-gray-800/80">
+                                <tr>
+                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-indigo-400 sm:pl-6">ID</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-indigo-400">Nome da Nave</th>
+                                    <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-indigo-400">Empresa Fabricante</th>
+                                    <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6 text-center">
+                                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                @if (Model == null || !Model.Any())
+                                {
+                                    <tr>
+                                        <td colspan="4" class="py-12 text-center text-sm text-gray-500 italic">
+                                            Nenhuma nave encontrada na frota.
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var ship in Model)
+                                    {
+                                        <tr class="hover:bg-white/5 transition-colors group">
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-white sm:pl-6">
+                                                <span class="inline-flex items-center rounded-md bg-indigo-400/10 px-2 py-1 text-xs font-medium text-indigo-400 ring-1 ring-inset ring-indigo-400/20">
+                                                    #@ship.ID
+                                                </span>
+                                            </td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-300 font-semibold group-hover:text-white transition-colors">
+                                                @ship.Name
+                                            </td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-400 italic">
+                                                @ship.Company
+                                            </td>
+                                            <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6">
+                                                <div class="flex justify-center items-center gap-4">
+                                                    <NavLink href="@($"/Starship/Edit/{ship.ID}")" class="text-indigo-400 hover:text-indigo-300 transition-colors p-1 rounded-full hover:bg-indigo-400/10" title="Editar">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                        </svg>
+                                                    </NavLink>
+                                                    <button @onclick="() => ExcludeRegister(ship)" class="text-rose-400 hover:text-rose-300 transition-colors p-1 rounded-full hover:bg-rose-400/10" title="Excluir">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+@code {
+    private List<Starship> Model { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Model = StarshipRepository.GetStarships();
+    }
+
+    private void ExcludeRegister(Starship ship)
+    {
+        StarshipRepository.DeleteStarships(ship);
+        Model.Remove(ship);
+    }
+}

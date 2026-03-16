@@ -1,16 +1,34 @@
 [
   {
     "ID": 0,
-    "Name": "Tardis",
+    "Name": "Millenium",
     "Company": "Daniel",
-    "Email": "danielmacileocrrea@gmail.com",
-    "Phone": "1991049403"
+    "Email": "daniel.correa@gmail.com",
+    "Phone": "199994944",
+    "AcceptPrivacy": false
   },
   {
     "ID": 1,
     "Name": "Space wing",
     "Company": "Ana",
     "Email": "daniel.correa@senhorcontabil.com.br",
-    "Phone": "19989444"
+    "Phone": "19989444",
+    "AcceptPrivacy": false
+  },
+  {
+    "ID": 2,
+    "Name": "Millenium",
+    "Company": "Daniel",
+    "Email": "daniel.correa@gmail.com",
+    "Phone": "199994944",
+    "AcceptPrivacy": false
+  },
+  {
+    "ID": 4,
+    "Name": "Falcon",
+    "Company": "Daniel",
+    "Email": "daniel.correa@gmail.com",
+    "Phone": "199994944",
+    "AcceptPrivacy": true
   }
 ]
